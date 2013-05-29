@@ -24,7 +24,7 @@ public:
 	void update(double elapsed_time);
 	void render();
 	void kill(){isDead = true;}
-	void relife(Matrix44 position){ isDead = false; matrix_ = position;}
+	void relife(Matrix44 position);
 };
 
 #endif

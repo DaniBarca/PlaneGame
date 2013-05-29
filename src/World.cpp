@@ -16,7 +16,7 @@ bool compare(const GameObject* A, const GameObject* B){
 World::World(){
 	assert(instance == NULL);
 	instance = this;
-	num_enemies = 5;
+	num_enemies = 6;
 
 	EnemyPlane* enemy;
 	mainCharacter = new Plane("..\\..\\data\\spitfire"    , "..\\..\\data\\spitfire_color_spec.tga", Vector3(0,0,0));
@@ -80,8 +80,7 @@ void World::update(double elapsed_time){
 		if(areColliding(enemies[i], mainCharacter))
 			std::cout << "Collision enemy-mainCharacter" << std::endl;
 
-		for(int j = 0; j < num_enemies; ++j){
-			if(i == j) continue;
+		for(int j = i+1; j < num_enemies; ++j){
 			if(areColliding(enemies[i], enemies[j]))
 				std::cout << "Collision between enemies" << std::endl;
 		}
