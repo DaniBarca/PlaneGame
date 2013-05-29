@@ -2,6 +2,9 @@
 ## Eclipse
 #################
 
+#Some meshes and shit
+data
+
 *.pydevproject
 .project
 .metadata
