@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\src\bullet.cpp" />
+    <ClCompile Include="..\..\src\BulletManager.cpp" />
+    <ClCompile Include="..\..\src\camera.cpp" />
+    <ClCompile Include="..\..\src\enemyPlane.cpp" />
+    <ClCompile Include="..\..\src\Entity.cpp" />
+    <ClCompile Include="..\..\src\framework.cpp" />
+    <ClCompile Include="..\..\src\game.cpp" />
+    <ClCompile Include="..\..\src\gameobject.cpp" />
+    <ClCompile Include="..\..\src\main.cpp" />
+    <ClCompile Include="..\..\src\mesh.cpp" />
+    <ClCompile Include="..\..\src\MeshManager.cpp" />
+    <ClCompile Include="..\..\src\movingobject.cpp" />
+    <ClCompile Include="..\..\src\plane.cpp" />
+    <ClCompile Include="..\..\src\rendertotexture.cpp" />
+    <ClCompile Include="..\..\src\shader.cpp" />
+    <ClCompile Include="..\..\src\text.cpp" />
+    <ClCompile Include="..\..\src\texture.cpp" />
+    <ClCompile Include="..\..\src\TextureManager.cpp" />
+    <ClCompile Include="..\..\src\utils.cpp" />
+    <ClCompile Include="..\..\src\World.cpp" />
+    <ClCompile Include="..\..\src\coldet\box.cpp">
+      <Filter>coldet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\coldet\box_bld.cpp">
+      <Filter>coldet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\coldet\coldet.cpp">
+      <Filter>coldet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\coldet\coldet_bld.cpp">
+      <Filter>coldet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\coldet\math3d.cpp">
+      <Filter>coldet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\coldet\mytritri.cpp">
+      <Filter>coldet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\coldet\sysdep.cpp">
+      <Filter>coldet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\coldet\tritri.c">
+      <Filter>coldet</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\bullet.h" />
+    <ClInclude Include="..\..\src\camera.h" />
+    <ClInclude Include="..\..\src\enemyPlane.h" />
+    <ClInclude Include="..\..\src\Entity.h" />
+    <ClInclude Include="..\..\src\framework.h" />
+    <ClInclude Include="..\..\src\game.h" />
+    <ClInclude Include="..\..\src\includes.h" />
+    <ClInclude Include="..\..\src\mesh.h" />
+    <ClInclude Include="..\..\src\plane.h" />
+    <ClInclude Include="..\..\src\rendertotexture.h" />
+    <ClInclude Include="..\..\src\shader.h" />
+    <ClInclude Include="..\..\src\text.h" />
+    <ClInclude Include="..\..\src\texture.h" />
+    <ClInclude Include="..\..\src\utils.h" />
+    <ClInclude Include="..\..\src\World.h" />
+    <ClInclude Include="..\..\src\coldet\box.h">
+      <Filter>coldet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\coldet\coldet.h">
+      <Filter>coldet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\coldet\coldetimpl.h">
+      <Filter>coldet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\coldet\math3d.h">
+      <Filter>coldet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\coldet\mytritri.h">
+      <Filter>coldet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\coldet\sysdep.h">
+      <Filter>coldet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\octree\array.h">
+      <Filter>octree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\octree\array2d.h">
+      <Filter>octree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\octree\numtraits.h">
+      <Filter>octree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\octree\octree.h">
+      <Filter>octree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\octree\point3d.h">
+      <Filter>octree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\octree\shareddata.h">
+      <Filter>octree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\octree\tinyvector.h">
+      <Filter>octree</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="coldet">
+      <UniqueIdentifier>{47764be7-56e9-4483-bde5-1496b2d3d446}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="octree">
+      <UniqueIdentifier>{ec144f20-3cce-49d4-aa11-2e5b452f6918}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\octree\octree.tcc">
+      <Filter>octree</Filter>
+    </None>
+  </ItemGroup>
+</Project>
