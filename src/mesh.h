@@ -16,6 +16,8 @@ public:
 	std::vector< Vector3 > normals;	 //here we store the normals
 	std::vector< Vector2 > uvs;	 //here we store the texture coordinates
 
+	CollisionModel3D* collisionModel;
+
 	std::vector< Vector3 > bounds;
 	float boundsRadius;
 

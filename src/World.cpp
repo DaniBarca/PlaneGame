@@ -16,7 +16,7 @@ bool compare(const GameObject* A, const GameObject* B){
 World::World(){
 	assert(instance == NULL);
 	instance = this;
-	num_enemies = 6;
+	num_enemies = 7;
 
 	EnemyPlane* enemy;
 	mainCharacter = new Plane("..\\..\\data\\spitfire"    , "..\\..\\data\\spitfire_color_spec.tga", Vector3(0,0,0));
@@ -94,10 +94,9 @@ bool World::areColliding(GameObject* a, GameObject* b){
 	if(a->distance(b) > (a->getMesh().boundsRadius + b->getMesh().boundsRadius)) return false;
 	
 	//Se solapen, per tant mirem si les meshes colisionen
-	a->collisionModel->setTransform(a->getMatrix().m);
-	b->collisionModel->setTransform(b->getMatrix().m);
+	a->getMesh().collisionModel->setTransform(a->getMatrix().m);
 
-	if(a->collisionModel->collision(b->collisionModel))
+	if(a->getMesh().collisionModel->collision(b->getMesh().collisionModel, -1, 0, b->getMatrix().m))
 		return true;
 	return false;
 }

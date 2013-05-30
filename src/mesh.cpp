@@ -31,7 +31,7 @@ void Mesh::getBounds(){
 	Vector3 max = vertices.at(0);
 	Vector3 min = vertices.at(0);
 
-	for(int i = 0; i < vertices.size(); ++i){
+	for(unsigned int i = 0; i < vertices.size(); ++i){
 		if(vertices.at(i).x > max.x) max.x = vertices.at(i).x;
 		if(vertices.at(i).y > max.y) max.y = vertices.at(i).y;
 		if(vertices.at(i).z > max.z) max.z = vertices.at(i).z;
@@ -69,8 +69,6 @@ bool Mesh::meshdefitxer(char *ase, char *bin)
 	int num_faces = my_parser.getint();
 
 	std::vector< Vector3 > vertex_index; //Vector amb l'index de vertex utilitzats
-	
-	int aux[3];
 
 	for (int i=0; i<num_vertex; i++ ) 
 		{
@@ -102,19 +100,30 @@ bool Mesh::meshdefitxer(char *ase, char *bin)
 			}
 		}
 
+	int aux[3];
+	collisionModel = newCollisionModel3D();
+	collisionModel->setTriangleNumber(num_faces);
 	for (int i=0; i<num_faces; i++ ) //Vector final amb tots els vertex de 3
-		{
+	{
 			my_parser.seek("*MESH_FACE");
 			
 			my_parser.seek("A:");
-			vertices.push_back( vertex_index[ my_parser.getint() ] );
+			aux[0] = my_parser.getint();
+			vertices.push_back( vertex_index[ aux[0] ] );
 			
 			my_parser.seek("B:");
-			vertices.push_back( vertex_index[ my_parser.getint() ] );
+			aux[1] = my_parser.getint();
+			vertices.push_back( vertex_index[ aux[1] ] );
 			
 			my_parser.seek("C:");
-			vertices.push_back( vertex_index[ my_parser.getint() ] );
+			aux[2] = my_parser.getint();
+			vertices.push_back( vertex_index[ aux[2] ] );
+
+			collisionModel->addTriangle(vertex_index[aux[0]].x, vertex_index[aux[0]].y, vertex_index[aux[0]].z,
+				                        vertex_index[aux[1]].x, vertex_index[aux[1]].y, vertex_index[aux[1]].z,
+										vertex_index[aux[2]].x, vertex_index[aux[1]].y, vertex_index[aux[1]].z);
 	}
+	collisionModel->finalize();
 
 	//Carrega Textures+Cares
 	my_parser.seek("*MESH_NUMTVERTEX");
@@ -230,6 +239,15 @@ bool Mesh::loadASE(char *dir)
 
 		fclose(f1);
 
+		collisionModel = newCollisionModel3D();
+		collisionModel->setTriangleNumber(data.size_normals);
+		for(unsigned int i = 0; i < vertices.size(); i = i+3){
+			collisionModel->addTriangle(vertices.at(i).x,   vertices.at(i).y,   vertices.at(i).z,
+				                        vertices.at(i+1).x, vertices.at(i+1).y, vertices.at(i+1).z,
+										vertices.at(i+2).x, vertices.at(i+2).y, vertices.at(i+2).z );
+		}
+		collisionModel->finalize();
+
 		boundsRadius = bounds[0].distance(bounds[1]);
 		return 1;
 	}
@@ -282,7 +300,7 @@ void Mesh::renderdebug() {
 	glPointSize(3);
 	glBegin (GL_LINE_STRIP);
 
-	for (int i=0; i<vertices.size(); i++)
+	for (unsigned int i=0; i<vertices.size(); i++)
 	{
 		glVertex3f( vertices[i].x, vertices[i].y, vertices[i].z );
 		glColor3f(normals[i].x, normals[i].y, normals[i].z);

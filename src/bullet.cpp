@@ -15,8 +15,13 @@ Bullet::Bullet(Matrix44 position){
 	matrix_ = position;
 
 	float angulo = 1 - matrix_.topVector().dot(Vector3(0,1,0));
-	std::cout << angulo << std::endl;
-	matrix_.rotate(0, Vector3(1,0,0));
+	float dir     = matrix_.rightVector().dot(Vector3(0,1,0));
+
+	angulo = DEGTORAD(angulo);
+	if(dir < 0)
+		matrix_.rotateLocal(angulo, Vector3(0,0,1));
+	if(dir > 0)
+		matrix_.rotateLocal(-angulo, Vector3(0,0,1));
 
 	isDead = false;
 
@@ -25,7 +30,7 @@ Bullet::Bullet(Matrix44 position){
 
 void Bullet::update(double elapsed_time){
 	if(isDead) return;
-	matrix_.rotateLocal(-elapsed_time * 0.1, Vector3(1,0,0)); //Gravedad
+	matrix_.rotate(-elapsed_time * 0.1, Vector3(1,0,0)); //Gravedad
 
 	matrix_.traslateLocal(0,0,speed*elapsed_time);         //Movimiento
 	distance_traveled += speed*elapsed_time;			   //Distancia recorrida
