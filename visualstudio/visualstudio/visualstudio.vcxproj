@@ -53,6 +53,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../libs/include</AdditionalIncludeDirectories>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -95,13 +96,17 @@
     <ClCompile Include="..\..\src\framework.cpp" />
     <ClCompile Include="..\..\src\game.cpp" />
     <ClCompile Include="..\..\src\gameobject.cpp" />
+    <ClCompile Include="..\..\src\hud.cpp" />
     <ClCompile Include="..\..\src\main.cpp" />
     <ClCompile Include="..\..\src\mesh.cpp" />
     <ClCompile Include="..\..\src\MeshManager.cpp" />
     <ClCompile Include="..\..\src\movingobject.cpp" />
+    <ClCompile Include="..\..\src\ParticleEmitter.cpp" />
+    <ClCompile Include="..\..\src\ParticleEmitterManager.cpp" />
     <ClCompile Include="..\..\src\plane.cpp" />
     <ClCompile Include="..\..\src\rendertotexture.cpp" />
     <ClCompile Include="..\..\src\shader.cpp" />
+    <ClCompile Include="..\..\src\Spitfire.cpp" />
     <ClCompile Include="..\..\src\text.cpp" />
     <ClCompile Include="..\..\src\texture.cpp" />
     <ClCompile Include="..\..\src\TextureManager.cpp" />
@@ -121,6 +126,7 @@
     <ClInclude Include="..\..\src\Entity.h" />
     <ClInclude Include="..\..\src\framework.h" />
     <ClInclude Include="..\..\src\game.h" />
+    <ClInclude Include="..\..\src\hud.h" />
     <ClInclude Include="..\..\src\includes.h" />
     <ClInclude Include="..\..\src\mesh.h" />
     <ClInclude Include="..\..\src\octree\array.h" />
@@ -130,9 +136,12 @@
     <ClInclude Include="..\..\src\octree\point3d.h" />
     <ClInclude Include="..\..\src\octree\shareddata.h" />
     <ClInclude Include="..\..\src\octree\tinyvector.h" />
+    <ClInclude Include="..\..\src\Particle.cpp" />
+    <ClInclude Include="..\..\src\ParticleEmitter.h" />
     <ClInclude Include="..\..\src\plane.h" />
     <ClInclude Include="..\..\src\rendertotexture.h" />
     <ClInclude Include="..\..\src\shader.h" />
+    <ClInclude Include="..\..\src\Spitfire.h" />
     <ClInclude Include="..\..\src\text.h" />
     <ClInclude Include="..\..\src\texture.h" />
     <ClInclude Include="..\..\src\utils.h" />
@@ -140,6 +149,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\src\octree\octree.tcc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -9,17 +9,21 @@
 #include "framework.h"
 #include <time.h>
 #include <random>
+#include "World.h"
 
 class EnemyPlane : public Plane{
-public:
+	double alertTime;
 	std::vector<Entity*> wayPoints;
 	int nextWaypoint;
+	bool alerted;
 
+public:
 	void patrol(double elapsed_time);
 	void goTo(Vector3 nextPoint, double elapsed_time);
 	void pursuit(double elapsed_time);
-public:
-	EnemyPlane(std::string meshdir, std::string texturedir, Vector3 position = Vector3(0,0,0));
+	void alert();
+
+	EnemyPlane(std::string meshdir, std::string texturedir);
 
 	virtual void update(double elapsed_time);
 	virtual void render();

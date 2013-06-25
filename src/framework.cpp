@@ -117,10 +117,10 @@ void Matrix44::clear()
 }
 
 void Matrix44::printMatrix(){
-	std::cout << m[0] << " | " << m[1] << " | " << m[2] << " | " << m[3] << std::endl;
-	std::cout << m[4] << " | " << m[5] << " | " << m[6] << " | " << m[7] << std::endl;
-	std::cout << m[8] << " | " << m[9] << " | " << m[10] << " | " << m[11] << std::endl;
-	std::cout << m[12] << " | " << m[13] << " | " << m[14] << " | " << m[15] << std::endl;
+	std::cout << m[0] << " | " << m[4] << " | " << m[8] << " | " << m[12] << std::endl;
+	std::cout << m[1] << " | " << m[5] << " | " << m[9] << " | " << m[13] << std::endl;
+	std::cout << m[2] << " | " << m[6] << " | " << m[10] << " | " << m[14] << std::endl;
+	std::cout << m[3] << " | " << m[7] << " | " << m[11] << " | " << m[15] << std::endl;
 }
 
 void Matrix44::setIdentity()
@@ -177,6 +177,10 @@ void Matrix44::rotateLocal( float angle_in_rad, const Vector3& axis )
 	Matrix44 R;
 	R.setRotation(angle_in_rad, axis);
 	*this = R * *this;
+}
+
+void Matrix44::unsetRotation(){
+	setTranslation(m[12], m[13], m[14]);
 }
 
 //To create a traslation matrix

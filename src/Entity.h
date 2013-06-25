@@ -14,11 +14,14 @@ public:
 	Entity(Vector3 position = Vector3(0,0,0));
 	Matrix44 getMatrix(){return matrix_;}
 
+	bool  Entity::isNearerThan(Entity* ent, int dist);
 	float distance(Entity* b);
+	void reset();
 
 protected:
 	std::string name_;
 	Matrix44 matrix_;
+	Matrix44 initial_matrix;
 	int id;
 };
 

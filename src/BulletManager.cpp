@@ -15,9 +15,8 @@
 class BulletManager{
 private:
 	static BulletManager* instance;
-	std::vector<Bullet*>* bulletVector;
-
 public:
+	std::vector<Bullet*>* bulletVector;
 	BulletManager(){
 		assert(instance == NULL);
 		instance = this;
@@ -31,13 +30,16 @@ public:
 		return instance;
 	}
 
-	void shoot(Matrix44 position){
-		if(!bulletVector->empty())
-			for(int i = 0; i < bulletVector->size(); ++i)
-				if(bulletVector->at(i)->isDead)
+	void shoot(Matrix44 position, bool thrownByPlayer = false){
+		if(!bulletVector->empty()){
+			for(unsigned int i = 0; i < bulletVector->size(); ++i){
+				if(bulletVector->at(i)->isDead){
 					bulletVector->at(i)->relife(position);
-
-		Bullet* b = new Bullet(position);
+					return;
+				}
+			}
+		}
+		Bullet* b = new Bullet(position, thrownByPlayer);
 		bulletVector->push_back(b);
 	}
 

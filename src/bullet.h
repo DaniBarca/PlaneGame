@@ -10,16 +10,18 @@
 
 class Bullet : public Entity{
 protected:
+
 	float speed;
 	float range;
 	float distance_traveled;
 
-	Matrix44 matrix_;
 	Vector3 aux,auxb;
-	
+
 public:
+	bool thrownByPlayer;
+	int   damage;
 	bool isDead;
-	Bullet(Matrix44 position);
+	Bullet(Matrix44 position, bool thrownByPlayer);
 
 	void update(double elapsed_time);
 	void render();

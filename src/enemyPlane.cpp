@@ -2,14 +2,12 @@
  */
 
 #include "enemyPlane.h"
-#include "World.h"
 #define NUMPOINTS 3
 #define DISTANCE 100
 
-EnemyPlane::EnemyPlane(std::string meshdir, std::string texturedir, Vector3 position) : Plane(meshdir,texturedir,position)
+EnemyPlane::EnemyPlane(std::string meshdir, std::string texturedir) : Plane(meshdir,texturedir,Vector3(rand()%10000 - 5000, rand()%2000 - 800, rand()%10000 - 5000))
 {
 	Entity* vaux;
-	//srand(time(NULL));
 	bool done;
 	vaux = new Entity(Vector3(rand()%10000 - 5000, rand()%2000 - 800, rand()%10000 - 5000));
 	wayPoints.push_back(vaux);
@@ -19,7 +17,7 @@ EnemyPlane::EnemyPlane(std::string meshdir, std::string texturedir, Vector3 posi
 
 		while(!done){
 			vaux = new Entity(Vector3(rand()%10000 - 5000, rand()%2000 - 800, rand()%10000 - 5000));
-			for(int j = 0; j < wayPoints.size(); ++j){
+			for(unsigned int j = 0; j < wayPoints.size(); ++j){
 				if(wayPoints.at(j)->distance(vaux) > DISTANCE)
 					done = true;
 			}
@@ -27,17 +25,31 @@ EnemyPlane::EnemyPlane(std::string meshdir, std::string texturedir, Vector3 posi
 		wayPoints.push_back(vaux);
 	}
 
-	speed = 50;
+	desired_speed = 50;
 	friction = 0;
 	roll = 0.1;
 
 	nextWaypoint = 0;
 }
 
+void EnemyPlane::alert(){
+	alertTime = SDL_GetTicks();
+	alerted = true;
+	desired_speed = 150;
+}
+
 void EnemyPlane::update(double elapsed_time){
-	MovingObject::update(elapsed_time);
-	
-	if(distance(World::getInstance()->mainCharacter) < 150)							//Si estem a prop del mainCharacter
+	matrix_.traslateLocal(0,0,speed*elapsed_time);
+
+	if(alerted && (SDL_GetTicks() - alertTime) * 0.001 > 30){
+		alerted = false;
+		desired_speed = 50;
+	}
+
+	if(isNearerThan(World::getInstance()->mainCharacter, 150)) //Si estem a prop del mainCharacter
+		alert();
+
+	if(alerted)							
 		pursuit(elapsed_time);
 	else
 		patrol(elapsed_time);
@@ -53,7 +65,7 @@ void EnemyPlane::patrol(double elapsed_time){
 
 	goTo(nextPoint, elapsed_time);
 
-	if(distance(wayPoints.at(nextWaypoint)) < DISTANCE){ //Si la distancia con el waypoint actual es inferior a DISTANCE
+	if(isNearerThan(wayPoints.at(nextWaypoint), DISTANCE)){ //Si la distancia con el waypoint actual es inferior a DISTANCE
 		if(nextWaypoint == NUMPOINTS)							 //Nos vamos al siguiente waypoint (o al primero)
 			nextWaypoint = 0;
 		else
@@ -76,13 +88,15 @@ void EnemyPlane::goTo(Vector3 nextPoint, double elapsed_time){
 	v_roll = angulob*2;
 	roll   = anguloc*2;
 
+	double et_i = 1/elapsed_time;
+
 	//Comprobamos si ya estamos casi en línea, estos 3 ifs evitan el efecto Parkinson
 	if(anguloa < 0.002)
-		h_roll = anguloa/elapsed_time;
+		h_roll = anguloa*et_i;
 	if(angulob < 0.002)
-		v_roll = angulob/elapsed_time;
+		v_roll = angulob*et_i;
 	if(anguloc < 0.05)
-		roll   = DEGTORAD(anguloc)/elapsed_time;
+		roll   = DEGTORAD(anguloc)*et_i;
 
 	//Y giramos:
 	//Horizontalmente
@@ -102,8 +116,6 @@ void EnemyPlane::goTo(Vector3 nextPoint, double elapsed_time){
 		Roll("RIGHT", elapsed_time);
 	if(dir3 > 0)
 		Roll("LEFT", elapsed_time);
-
-
 }
 
 void EnemyPlane::render(){

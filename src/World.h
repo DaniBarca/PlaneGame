@@ -1,54 +1,49 @@
-/* Dani Barca 2013
- * Classe Singleton per gestionar tot el món del joc
- */
-
 #ifndef WORLD_H
 #define WORLD_H
 
-#include "includes.h"
-#include <assert.h>
-#include "gameobject.cpp"
-#include "Entity.h"
-#include "plane.h"
-#include <vector>
-#include "camera.h"
-#include <algorithm>
 #include "TextureManager.cpp"
-#include "MeshManager.cpp"
 #include "BulletManager.cpp"
+#include "MeshManager.cpp"
+#include "gameobject.cpp"
 #include "enemyPlane.h"
-#include "coldet/coldet.h"
+#include "framework.h"
+#include "includes.h"
+#include "Spitfire.h"
+#include "Entity.h"
+#include "camera.h"
+#include "plane.h"
+#include "text.h"
 
-typedef struct{
-	GameObject* a;
-	GameObject* b;
-}EntityPair;
+class Hud;
+#include "hud.h"
 
 class World{
 	static World* instance;
 
-	GameObject* scenario;
+	vector<EnemyPlane*> enemyPlanes;
+
 	GameObject* sky;
+	vector<GameObject*> scene;
+	float sceneW, sceneH;
 
-	std::vector<EnemyPlane*> enemies;
-	int num_enemies;
+	Hud * hud;
 
-	std::vector<GameObject*> allObjects;
-
-	std::vector<EntityPair> potentialCollisions;
-
+	void searchEnemyCollision();
+	void searchBulletCollisions();
+	bool collidesWithTerrain(GameObject* g);
+	int minDist;
 public:
 	Camera* camera;
-	Plane*      mainCharacter;
-	World();
+	Plane*  mainCharacter;
 
 	static World* getInstance();
-	
-	void update(double elapsed_time);
+	World();
+	~World();
 
+	void update(double elapsed_time);
 	void render();
 
-	bool areColliding(GameObject* a, GameObject* b);
+	bool readTxt(std::string dir);
 };
 
 #endif

@@ -18,9 +18,10 @@ protected:
 	Texture* texture_;	//Informació de les textures
 
 	int priority;
+	int life;
 public:
 
-	GameObject(std::string meshdir, std::string texturedir, Vector3 position = Vector3(0,0,0),  bool mipmapping = true, bool scale = false)
+	GameObject(std::string meshdir, std::string texturedir, Vector3 position = Vector3(0,0,0),  bool mipmapping = true)
 	: Entity(position)    {
 		mesh_    = (MeshManager   ::getInstance())->get(meshdir);
 		texture_ = (TextureManager::getInstance())->get(texturedir, mipmapping);
@@ -29,19 +30,12 @@ public:
 
 		name_ = "GameObject " + id;
 
-		if(scale){
-			matrix_.m[0] =  2;
-			matrix_.m[5] =  1;
-			matrix_.m[10]=  2;
-		}
+		life = 100;
 	}
 
 	virtual void render(){
-		glPushMatrix();	
+		glPushMatrix();
 		matrix_.set();
-
-
-		//mesh_->renderBounds();
 
 		texture_->bind();
 		mesh_   ->render();
@@ -62,5 +56,11 @@ public:
 	int getPriority() const	{ return priority;}
 
 	Mesh getMesh(){ return *mesh_;}
+
+	bool isDead(){ return life <= 0; }
+
+	void hurt(int damage){
+		life-=damage;
+	}
 };
 #endif

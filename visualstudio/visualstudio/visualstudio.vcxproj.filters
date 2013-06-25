@@ -20,7 +20,6 @@
     <ClCompile Include="..\..\src\texture.cpp" />
     <ClCompile Include="..\..\src\TextureManager.cpp" />
     <ClCompile Include="..\..\src\utils.cpp" />
-    <ClCompile Include="..\..\src\World.cpp" />
     <ClCompile Include="..\..\src\coldet\box.cpp">
       <Filter>coldet</Filter>
     </ClCompile>
@@ -45,6 +44,11 @@
     <ClCompile Include="..\..\src\coldet\tritri.c">
       <Filter>coldet</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\ParticleEmitter.cpp" />
+    <ClCompile Include="..\..\src\ParticleEmitterManager.cpp" />
+    <ClCompile Include="..\..\src\hud.cpp" />
+    <ClCompile Include="..\..\src\Spitfire.cpp" />
+    <ClCompile Include="..\..\src\World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\bullet.h" />
@@ -61,7 +65,6 @@
     <ClInclude Include="..\..\src\text.h" />
     <ClInclude Include="..\..\src\texture.h" />
     <ClInclude Include="..\..\src\utils.h" />
-    <ClInclude Include="..\..\src\World.h" />
     <ClInclude Include="..\..\src\coldet\box.h">
       <Filter>coldet</Filter>
     </ClInclude>
@@ -101,6 +104,11 @@
     <ClInclude Include="..\..\src\octree\tinyvector.h">
       <Filter>octree</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\ParticleEmitter.h" />
+    <ClInclude Include="..\..\src\Particle.cpp" />
+    <ClInclude Include="..\..\src\hud.h" />
+    <ClInclude Include="..\..\src\Spitfire.h" />
+    <ClInclude Include="..\..\src\World.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="coldet">

@@ -9,6 +9,7 @@
 
 class MovingObject : public GameObject{
 protected:
+	float desired_speed;
 	float speed;
 	float acceleration;
 	float deceleration;
@@ -24,6 +25,7 @@ protected:
 public:
 	MovingObject(std::string meshdir, std::string texturedir, Vector3 position = Vector3(0,0,0), bool mipmapping = true) 
 	: GameObject(meshdir,texturedir,position,mipmapping){
+		this->desired_speed= 0;
 		this->speed        = 0;
 		this->acceleration = 1;
 		this->deceleration = 1;
@@ -33,7 +35,7 @@ public:
 		this->roll         = 1;
 		this->v_roll       = 1;
 		this->h_roll       = 1;
-		this->friction     = 0.001;
+		this->friction     = 0.5;
 
 		name_ = "MovingObject " + id;
 	}
@@ -67,13 +69,13 @@ public:
 	}
 
 	virtual void accelerate(double elapsed_time){
-		if((speed += getAcceleration() * elapsed_time) > max_speed)
-			speed =  max_speed;
+		if((desired_speed += getAcceleration() * elapsed_time) > max_speed)
+			desired_speed =  max_speed;
 	}
 	
 	virtual void decelerate(double elapsed_time){
-		if((speed -= getDeceleration() * elapsed_time) < min_speed){
-			speed = min_speed;
+		if((desired_speed -= getDeceleration() * elapsed_time) < min_speed){
+			desired_speed = min_speed;
 		}
 	}
 
@@ -99,8 +101,9 @@ public:
 	}
 
 	virtual void update(double elapsed_time){
-		if((speed -= getFriction()) < min_speed)
-			speed = min_speed;
+		desired_speed += (desired_speed > min_speed) ? -getFriction() : getFriction();
+
+		speed += (desired_speed-speed) * 0.05;
 
 		matrix_.traslateLocal(0,0,speed*elapsed_time);
 	}

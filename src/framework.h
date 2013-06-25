@@ -8,8 +8,11 @@
 #include <vector>
 #include <cmath>
 
+using namespace std;
+
 #define DEG2RAD 0.0174532925
 #define DEGTORAD(d) d*DEG2RAD
+#define ONESPIN DEGTORAD(360)
 
 class Vector2
 {
@@ -118,6 +121,9 @@ class Matrix44
 		void transpose();
 		void setMatrix(const float m[16]);
 		void printMatrix();
+		void unsetRotation();
+
+		Vector3 getPos() { return Vector3(m[12],m[13],m[14]);}
 
 		//get base vectors
 		Vector3 rightVector() { return Vector3(m[0],m[1],m[2]); }

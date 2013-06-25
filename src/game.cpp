@@ -27,6 +27,7 @@ void Game::init(void)
 	//OpenGL flags
 	glEnable( GL_CULL_FACE ); //render both sides of every triangle
 	glEnable( GL_DEPTH_TEST ); //check the occlusions using the Z buffer
+	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	World::getInstance();
 
@@ -94,7 +95,7 @@ void Game::update(double seconds_elapsed)
 	if (keystate[SDLK_e])    { World::getInstance()->mainCharacter->decelerate(seconds_elapsed);     	}
 	if (keystate[SDLK_n])    { World::getInstance()->mainCharacter->hRoll("LEFT", seconds_elapsed);	    }
 	if (keystate[SDLK_m])    { World::getInstance()->mainCharacter->hRoll("RIGHT",   seconds_elapsed);	}
-	if (keystate[SDLK_SPACE]){ World::getInstance()->mainCharacter->shoot(); }
+	if (keystate[SDLK_SPACE]){ World::getInstance()->mainCharacter->shoot(true); }
 	if (keystate[SDLK_l])    { std::cout << (World::getInstance()->mainCharacter->getMatrix()*Vector3(0,0,1)).y << std::endl;}
 
 	World::getInstance()->update(seconds_elapsed);

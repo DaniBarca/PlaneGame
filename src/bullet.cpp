@@ -4,38 +4,30 @@
 
 #include "bullet.h"
 
-Bullet::Bullet(Matrix44 position){
-	speed = 600;
-	range = 2000;
+Bullet::Bullet(Matrix44 position, bool thrownByPlayer):Entity(Vector3(position.m[12],position.m[13],position.m[14])){
+	speed = 900;
+	range = 10000;
 	distance_traveled = 0;
+
+	matrix_ = position;
 
 	aux = Vector3(0,0,0);
 	auxb= Vector3(0,0,0);
 
-	matrix_ = position;
-
-	float angulo = 1 - matrix_.topVector().dot(Vector3(0,1,0));
-	float dir     = matrix_.rightVector().dot(Vector3(0,1,0));
-
-	angulo = DEGTORAD(angulo);
-	if(dir < 0)
-		matrix_.rotateLocal(angulo, Vector3(0,0,1));
-	if(dir > 0)
-		matrix_.rotateLocal(-angulo, Vector3(0,0,1));
-
 	isDead = false;
 
 	name_ = "Bullet " + id;
+
+	damage = 5;
+	this->thrownByPlayer = thrownByPlayer;
 }
 
 void Bullet::update(double elapsed_time){
 	if(isDead) return;
-	matrix_.rotate(-elapsed_time * 0.1, Vector3(1,0,0)); //Gravedad
+	matrix_.traslateLocal(0,0,speed*elapsed_time);            //Movimiento
+	distance_traveled += speed*elapsed_time;			      //Distancia recorrida
 
-	matrix_.traslateLocal(0,0,speed*elapsed_time);         //Movimiento
-	distance_traveled += speed*elapsed_time;			   //Distancia recorrida
-
-	if(distance_traveled > range)						   //Si superamos el rango, matamos la bala
+	if(distance_traveled > range)						      //Si superamos el rango, matamos la bala
 		isDead = true;
 }
 
@@ -45,10 +37,23 @@ void Bullet::render(){
 	
 	maux.traslateLocal(0,0,20);
 	aux = maux*Vector3(0,0,1);
+
+	glLineWidth(1);
 	glBegin(GL_LINE_STRIP);
 		glColor3f(255,255,255);
 		glVertex3f ((matrix_*Vector3(0,0,1)).x, (matrix_*Vector3(0,0,1)).y, (matrix_*Vector3(0,0,1)).z);
 		glColor3f(190,190,0);
 		glVertex3f (aux.x, aux.y, aux.z);
 	glEnd();
+}
+
+void Bullet::relife(Matrix44 position){
+	distance_traveled = 0;
+
+	aux = Vector3(0,0,0);
+	auxb= Vector3(0,0,0);
+
+	matrix_ = position;
+
+	isDead = false;
 }
