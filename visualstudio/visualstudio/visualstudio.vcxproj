@@ -96,6 +96,7 @@
     <ClCompile Include="..\..\src\framework.cpp" />
     <ClCompile Include="..\..\src\game.cpp" />
     <ClCompile Include="..\..\src\gameobject.cpp" />
+    <ClCompile Include="..\..\src\helix.cpp" />
     <ClCompile Include="..\..\src\hud.cpp" />
     <ClCompile Include="..\..\src\main.cpp" />
     <ClCompile Include="..\..\src\mesh.cpp" />

@@ -47,6 +47,7 @@ void Hud::render(std::vector<EnemyPlane*> enemies, Camera* camera3D){
 	Vector3 spos = Vector3();
 	GLdouble x,y,z;
 	Matrix44 mat = Matrix44();
+	glPointSize(8);
 
 	for(unsigned int i = 0; i < enemies.size(); ++i){
 		if(enemies[i]->isDead()) continue;
@@ -56,6 +57,10 @@ void Hud::render(std::vector<EnemyPlane*> enemies, Camera* camera3D){
 
 		gluProject(pos.x,pos.y,pos.z, model_view,projection,viewport,&x,&y,&z);
 		y=WINDOW_HEIGHT-y;
+
+		if(z>1){
+			x = -1;
+		}
 
 		if(x < 0 || x > WINDOW_WIDTH || y < 0 || y > WINDOW_HEIGHT){
 			if(x <= 0)
@@ -67,7 +72,6 @@ void Hud::render(std::vector<EnemyPlane*> enemies, Camera* camera3D){
 			if(y >= WINDOW_HEIGHT)
 				y = 0.99 * WINDOW_HEIGHT;
 
-			glPointSize(5);
 			glBegin(GL_POINTS);
 				glVertex2f(x,y);
 			glEnd();

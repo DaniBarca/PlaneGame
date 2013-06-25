@@ -33,6 +33,8 @@ class World{
 	bool collidesWithTerrain(GameObject* g);
 	int minDist;
 public:
+	int cam;
+	int enemyFollowing;
 	Camera* camera;
 	Plane*  mainCharacter;
 

@@ -21,6 +21,8 @@ World::World(){
 	camera->eye    = mainCharacter->getMatrix() * Vector3(0,3,-10);
 
 	hud = new Hud();
+	cam = 0;
+	enemyFollowing = 0;
 }
 
 World* World::getInstance(){
@@ -39,9 +41,19 @@ bool World::collidesWithTerrain(GameObject* g){
 	return false;
 }
 
-bool World::searchEnemyCollision(){
+void World::searchEnemyCollision(){
+	bool mainTrSet = false;
 	for(unsigned int i = 0; i < enemyPlanes.size(); ++i){
 		if(enemyPlanes[i]->isDead())continue;
+		if(mainCharacter->isNearerThan(enemyPlanes[i],20)){
+			if(!mainTrSet){
+				mainCharacter->getMesh().collisionModel->setTransform(mainCharacter->getMatrix().m);
+				mainTrSet=true;
+			}
+			if(mainCharacter->getMesh().collisionModel->collision(enemyPlanes[i]->getMesh().collisionModel,-1,0,enemyPlanes[i]->getMatrix().m)){
+				mainCharacter->reset();
+			}
+		}
 	}
 }
 
@@ -59,6 +71,7 @@ void World::searchBulletCollisions(){
 				bulletVector->at(i)->kill();
 				enemyPlanes[j]->hurt(bulletVector->at(i)->damage);
 				enemyPlanes[j]->alert();
+				enemyPlanes[j]->panic();
 				break;
 			}
 		}
@@ -76,9 +89,21 @@ void World::update(double elapsed_time){
 	mainCharacter->update(elapsed_time);
 
 	//Set camera behind the plane
-	camera->center  = mainCharacter->getMatrix() * Vector3(0,5,1);
-	camera->up      = mainCharacter->getMatrix().topVector();
-	camera->eye     = (camera->eye - camera->center).normalize()*20 + camera->center; // mainCharacter->getMatrix() * Vector3(0,3,-10);
+	if(cam == 0){
+		camera->center  = mainCharacter->getMatrix() * Vector3(0,5,1);
+		camera->up      = mainCharacter->getMatrix().topVector();
+		camera->eye     = (camera->eye - camera->center).normalize()*20 + camera->center; // mainCharacter->getMatrix() * Vector3(0,3,-10);
+	}
+	if(cam == 1){
+		while(enemyPlanes[enemyFollowing]->isDead()){
+			enemyFollowing++;
+			if(enemyFollowing >= enemyPlanes.size())
+				enemyFollowing = 0;
+		}
+		camera->center  = enemyPlanes[enemyFollowing]->getMatrix() * Vector3(0,5,1);
+		camera->up      = enemyPlanes[enemyFollowing]->getMatrix().topVector();
+		camera->eye     = (camera->eye - camera->center).normalize()*20 + camera->center; // mainCharacter->getMatrix() * Vector3(0,3,-10);
+	}
 
 	//Set sky over the camera
 	sky->setPos(Vector3(camera->center.x, camera->center.y-500, camera->center.z));
@@ -94,6 +119,7 @@ void World::update(double elapsed_time){
 		mainCharacter->reset();
 
 	searchBulletCollisions();
+	searchEnemyCollision();
 }
 
 void World::render(){

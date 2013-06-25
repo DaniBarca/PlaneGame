@@ -21,7 +21,7 @@ public:
 	bool thrownByPlayer;
 	int   damage;
 	bool isDead;
-	Bullet(Matrix44 position, bool thrownByPlayer);
+	Bullet(Matrix44 position, bool thrownByPlayer, int damage = 5);
 
 	void update(double elapsed_time);
 	void render();

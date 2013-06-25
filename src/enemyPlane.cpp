@@ -30,29 +30,68 @@ EnemyPlane::EnemyPlane(std::string meshdir, std::string texturedir) : Plane(mesh
 	roll = 0.1;
 
 	nextWaypoint = 0;
+
+	alerted = false;
+	inPanic = false;
+	evasionDir = 0;
+	panicCount = 0;
+}
+
+void EnemyPlane::evade(double elapsed_time){
+	if((SDL_GetTicks()-lastEvasion)*0.001 > 1){
+		lastEvasion = SDL_GetTicks();
+		evasionDir = (evasionDir == 1) ? -1 : 1;
+	}
+
+	v_roll = 2;
+
+	(evasionDir == 1) ? vRoll("UP",elapsed_time) : vRoll("DOWN",elapsed_time);
 }
 
 void EnemyPlane::alert(){
 	alertTime = SDL_GetTicks();
 	alerted = true;
-	desired_speed = 150;
+	desired_speed = 100;
+}
+
+void EnemyPlane::panic(){
+	panicCount++;
+	if(!alerted || panicCount < 4 || inPanic) return;	//Si ya estábamos alerta, que cunda el pánico
+
+	cout << "panic" << endl;
+	panicTime = SDL_GetTicks();
+	inPanic = true;
+	evasionDir = -1;
 }
 
 void EnemyPlane::update(double elapsed_time){
-	matrix_.traslateLocal(0,0,speed*elapsed_time);
+	MovingObject::update(elapsed_time);
 
-	if(alerted && (SDL_GetTicks() - alertTime) * 0.001 > 30){
+	if(alerted && (SDL_GetTicks() - alertTime) * 0.001 > 30){ //mínimo 30 segundos en alerta
 		alerted = false;
 		desired_speed = 50;
+	}
+	if(inPanic && (SDL_GetTicks() - panicTime) * 0.001 > 5){  //mínimo 5 segundos en pánico
+		inPanic = false;
+		desired_speed = 50;
+		evasionDir = 0;
+		panicCount = 0;
 	}
 
 	if(isNearerThan(World::getInstance()->mainCharacter, 150)) //Si estem a prop del mainCharacter
 		alert();
 
-	if(alerted)							
+	if(inPanic){
+		evade(elapsed_time);
+		return;
+	}
+	if(alerted){		
 		pursuit(elapsed_time);
-	else
-		patrol(elapsed_time);
+		return;
+	}
+	
+	patrol(elapsed_time);
+	return;
 }
 
 void EnemyPlane::pursuit(double elapsed_time){
@@ -120,7 +159,9 @@ void EnemyPlane::goTo(Vector3 nextPoint, double elapsed_time){
 
 void EnemyPlane::render(){
 	GameObject::render();
-	/*Matrix44 aux; aux.setIdentity();
+	/*
+	//Debug code
+	Matrix44 aux; aux.setIdentity();
 	glColor3f(255,255,255);
 	for(int i = 0; i < NUMPOINTS; ++i){
 		glPushMatrix();

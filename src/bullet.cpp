@@ -4,7 +4,7 @@
 
 #include "bullet.h"
 
-Bullet::Bullet(Matrix44 position, bool thrownByPlayer):Entity(Vector3(position.m[12],position.m[13],position.m[14])){
+Bullet::Bullet(Matrix44 position, bool thrownByPlayer, int damage):Entity(Vector3(position.m[12],position.m[13],position.m[14])){
 	speed = 900;
 	range = 10000;
 	distance_traveled = 0;
@@ -18,7 +18,7 @@ Bullet::Bullet(Matrix44 position, bool thrownByPlayer):Entity(Vector3(position.m
 
 	name_ = "Bullet " + id;
 
-	damage = 5;
+	this->damage = damage;
 	this->thrownByPlayer = thrownByPlayer;
 }
 

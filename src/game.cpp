@@ -97,6 +97,7 @@ void Game::update(double seconds_elapsed)
 	if (keystate[SDLK_m])    { World::getInstance()->mainCharacter->hRoll("RIGHT",   seconds_elapsed);	}
 	if (keystate[SDLK_SPACE]){ World::getInstance()->mainCharacter->shoot(true); }
 	if (keystate[SDLK_l])    { std::cout << (World::getInstance()->mainCharacter->getMatrix()*Vector3(0,0,1)).y << std::endl;}
+	if (keystate[SDLK_v])    { World::getInstance()->cam = (World::getInstance()->cam == 0) ? 1 : 0; }
 
 	World::getInstance()->update(seconds_elapsed);
 	/*if ((mouse_state & SDL_BUTTON_LEFT) || mouse_locked ) //is left button pressed?

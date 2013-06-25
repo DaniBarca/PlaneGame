@@ -103,7 +103,7 @@ public:
 	virtual void update(double elapsed_time){
 		desired_speed += (desired_speed > min_speed) ? -getFriction() : getFriction();
 
-		speed += (desired_speed-speed) * 0.05;
+		speed += (desired_speed-speed) * 0.01;
 
 		matrix_.traslateLocal(0,0,speed*elapsed_time);
 	}
