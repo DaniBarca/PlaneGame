@@ -1,5 +1,5 @@
-#ifndef HELIX_H
-#define HELIX_H
+#ifndef HELIX
+#define HELIX
 
 #include "gameobject.cpp"
 

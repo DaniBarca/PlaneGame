@@ -50,6 +50,7 @@
     <ClCompile Include="..\..\src\Spitfire.cpp" />
     <ClCompile Include="..\..\src\World.cpp" />
     <ClCompile Include="..\..\src\helix.cpp" />
+    <ClCompile Include="..\..\src\pitch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\bullet.h" />

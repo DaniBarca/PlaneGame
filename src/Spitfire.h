@@ -3,6 +3,7 @@
 #define SPITFIRE_H
 #include "plane.h"
 #include "helix.cpp"
+#include "pitch.cpp"
 
 class Spitfire : public Plane{
 	Mesh*    back_pitch;
@@ -11,6 +12,7 @@ class Spitfire : public Plane{
 	float    desired_bp_r;
 
 	Helix helix_;
+	Pitch pitch_;
 public:
 	Spitfire(std::string meshdir, std::string texturedir, Vector3 position);
 	virtual void update(double);

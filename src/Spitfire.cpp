@@ -2,57 +2,54 @@
 
 Spitfire::Spitfire(std::string meshdir, std::string texturedir, Vector3 position) 
 	: Plane(meshdir, texturedir, position){
-	back_pitch   = (MeshManager::getInstance())->get("..\\..\\data\\spitfire_back_pitch");
-	back_pitch_m = matrix_;
-	back_pitch_m.traslateLocal(0,0.45,-5.7);
-
 	helix_ = Helix(matrix_);
+	pitch_ = Pitch();
 }
 
 void Spitfire::update(double elapsed_time){
 	MovingObject::update(elapsed_time);
 
 	helix_.update(elapsed_time, matrix_);
-
-	back_pitch_m = matrix_;
-	back_pitch_m.traslateLocal(0,0.45,-5.7);
+	pitch_.update(elapsed_time, matrix_);
 }
 
 void Spitfire::Roll(std::string dir, double elapsed_time){
-	if(dir.compare("RIGHT") == 0)
+	if(dir.compare("RIGHT") == 0){
 		matrix_.rotateLocal(-getRoll()* elapsed_time, Vector3(0,0,1));
-	else
+		pitch_.D();
+	}
+	else{
 		matrix_.rotateLocal(getRoll()* elapsed_time, Vector3(0,0,1));
+		pitch_.A();
+	}
+
 }
 
 void Spitfire::hRoll(std::string dir, double elapsed_time){
-	if(dir.compare("RIGHT") == 0)
+	if(dir.compare("RIGHT") == 0){
 		matrix_.rotateLocal(getHRoll() * elapsed_time, Vector3(0,1,0));
-	else
+		pitch_.M();
+	}
+	else{
 		matrix_.rotateLocal(-getHRoll()* elapsed_time, Vector3(0,1,0));
+		pitch_.N();
+	}
 }
 
 void Spitfire::vRoll(std::string dir, double elapsed_time){
-	if(dir.compare("UP") == 0)
+	if(dir.compare("UP") == 0){
 		matrix_.rotateLocal(-getVRoll()* elapsed_time, Vector3(1,0,0));
-	else
+		pitch_.W();
+	}
+	else{
 		matrix_.rotateLocal(getVRoll() * elapsed_time, Vector3(1,0,0));
+		pitch_.S();
+	}
 }
 
 void Spitfire::render(){
 	GameObject::render();
 	
-	glPushMatrix();
-
-	back_pitch_m.set();
-
-	texture_->bind();
-	//Pintamos el back pitch
-	back_pitch->render();
-
-	texture_->unbind();
-
-	glPopMatrix();
-
+	pitch_.render();
 	helix_.render();
 }
