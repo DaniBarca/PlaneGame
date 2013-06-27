@@ -44,6 +44,8 @@ class World{
 	void alertEnemyTerrainCollision();
 	int minDist;
 
+	int level;
+	int aliveEnemies;
 public:
 	vector<GameObject*> scene;
 	int cam;

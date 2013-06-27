@@ -121,10 +121,9 @@ void EnemyPlane::pursuit(double elapsed_time){
 	//Hacemos que persiga un poco por detrás al jugador
 	goTo((World::getInstance()->mainCharacter->getMatrix() * Vector3(0,0,1) - Vector3(0,0,10)) - getMatrix()*Vector3(0,0,1), elapsed_time);
 
-	//Vector3 v = matrix_.frontVector();
-	//Vector3 vb= (World::getInstance())->mainCharacter->getMatrix().getPos() - matrix_.getPos();
-	//float angle = RADTODEG(acos(v.dot(vb) / (v.length()*vb.length())));
-	float angle = RADTODEG(matrix_.frontVector().dot((World::getInstance())->mainCharacter->getMatrix().getPos()));
+	Vector3 v = matrix_.frontVector();
+	Vector3 vb= (World::getInstance())->mainCharacter->getMatrix().getPos() - matrix_.getPos();
+	float angle = RADTODEG(acos(v.dot(vb) / (v.length()*vb.length())));
 
 	if(-30 < angle && angle < 30){
 		shoot();

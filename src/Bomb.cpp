@@ -19,9 +19,9 @@ Bomb::Bomb(Matrix44 position, bool thrownByPlayer,vector<GameObject*> scene, int
 
 	for(unsigned int i = 0; i < scene.size(); ++i){
 		scene[i]->getMesh().collisionModel->setTransform(scene[i]->getMatrix().m);
-		if(scene[i]->getMesh().collisionModel->rayCollision(pos.v,(pos + aux).v,true)){
+		if(scene[i]->getMesh().collisionModel->rayCollision(pos.v,(pos+aux).v,true)){
 			found = true;
-			scene[i]->getMesh().collisionModel->getCollisionPoint(CollisionPoint.v,true);
+			scene[i]->getMesh().collisionModel->getCollisionPoint(CollisionPoint.v,false);
 			cout << CollisionPoint.x << " - " << CollisionPoint.y << " - " << CollisionPoint.z << endl;
 			break;
 		}
@@ -55,14 +55,22 @@ void Bomb::render(){
 void Bomb::relife(Matrix44 position, bool thrownByPlayer, vector<GameObject*> scene){
 	Bullet::relife(position,thrownByPlayer);
 	
+	//Averiguamos en qué punto caerá la bomba
 	Vector3 aux = Vector3(0,-1,0);
 	Vector3 pos = matrix_.getPos();
 	bool found = false;
 
+	matrix_ = Matrix44();
+	matrix_.m[12] = position.m[12];
+	matrix_.m[13] = position.m[13];
+	matrix_.m[14] = position.m[14];
+
 	for(unsigned int i = 0; i < scene.size(); ++i){
-		if(scene[i]->getMesh().collisionModel->rayCollision(pos.v,(pos + aux).v,true)){
+		scene[i]->getMesh().collisionModel->setTransform(scene[i]->getMatrix().m);
+		if(scene[i]->getMesh().collisionModel->rayCollision(pos.v,(pos+aux).v,true)){
 			found = true;
-			scene[i]->getMesh().collisionModel->getCollisionPoint(CollisionPoint.v,true);
+			scene[i]->getMesh().collisionModel->getCollisionPoint(CollisionPoint.v,false);
+			cout << CollisionPoint.x << " - " << CollisionPoint.y << " - " << CollisionPoint.z << endl;
 			break;
 		}
 	}

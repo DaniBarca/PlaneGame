@@ -23,16 +23,24 @@ World::World(){
 	bd.meshdir = "..\\..\\data\\superbunker";
 	buildsDir[4] = (bd);
 
-	loadLevel("..\\..\\data\\levels\\2.txt");
+	level = 1;
+	loadLevel("..\\..\\data\\levels\\1.txt");
 }
 
 void World::loadLevel(std::string level){
 	enemyPlanes.clear();
 	buildings.clear();
 	scene.clear();
+	(BulletManager::getInstance())->bombVector->clear();
+	(BulletManager::getInstance())->bulletVector->clear();
 
 	bool success = readTxt(level);
 	assert(success);
+
+	if(this->level == 1)
+		aliveEnemies = enemyPlanes.size();
+	else if(this->level == 2)
+		aliveEnemies = buildings.size();
 
 	for(unsigned int i = 0; i < enemyPlanes.size(); ++i){
 		cout << i << endl;
@@ -170,6 +178,11 @@ void World::throwBomb(){
 }
 
 void World::update(double elapsed_time){
+	if(this->level == 1)
+		aliveEnemies = enemyPlanes.size();
+	else if(this->level == 2)
+		aliveEnemies = buildings.size();
+
 	mainCharacter->update(elapsed_time);
 
 	//Set camera behind the plane
@@ -179,25 +192,32 @@ void World::update(double elapsed_time){
 		camera->eye     = (camera->eye - camera->center).normalize()*20 + camera->center;
 	}
 	if(cam == 1){
-		/*while(enemyPlanes[enemyFollowing]->isDead()){
+		while(enemyPlanes[enemyFollowing]->isDead()){
 			enemyFollowing++;
 			if(enemyFollowing >= enemyPlanes.size())
 				enemyFollowing = 0;
 		}
 		camera->center  = enemyPlanes[enemyFollowing]->getMatrix() * Vector3(0,5,1);
 		camera->up      = enemyPlanes[enemyFollowing]->getMatrix().topVector();
-		camera->eye     = (camera->eye - camera->center).normalize()*20 + camera->center; */
-		camera->center  = BulletManager::getInstance()->bombVector->at(0)->getMatrix() * Vector3(0,5,1);
-		camera->up      = BulletManager::getInstance()->bombVector->at(0)->getMatrix().topVector();
-		camera->eye     = (camera->eye - camera->center).normalize()*20 + camera->center; // mainCharacter->getMatrix() * Vector3(0,3,-10);
+		camera->eye     = (camera->eye - camera->center).normalize()*20 + camera->center;
 	}
 
 	//Set sky over the camera
 	sky->setPos(Vector3(camera->center.x, camera->center.y-500, camera->center.z));
 
+	
 	for(unsigned int i = 0; i < enemyPlanes.size(); ++i){
-		if(enemyPlanes[i]->isDead()) continue;
+		if(enemyPlanes[i]->isDead()){
+			if(level == 1) aliveEnemies--;
+			continue;
+		}
 		enemyPlanes[i]->update(elapsed_time);
+	}
+
+	if(level==2){
+	for(unsigned int i = 0; i < buildings.size(); ++i)
+		if(buildings[i]->isDead())
+			aliveEnemies--;
 	}
 
 	(BulletManager::getInstance())->update(elapsed_time);
@@ -209,6 +229,13 @@ void World::update(double elapsed_time){
 	searchEnemyCollision();
 	alertEnemyTerrainCollision();
 	searchBombCollisions();
+
+	if(level == 1){
+		if(aliveEnemies <= 0){
+			level++;
+			loadLevel("..\\..\\data\\levels\\2.txt");
+		}
+	}
 }
 
 void World::render(){
