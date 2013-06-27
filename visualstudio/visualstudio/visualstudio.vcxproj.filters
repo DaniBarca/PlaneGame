@@ -51,6 +51,8 @@
     <ClCompile Include="..\..\src\World.cpp" />
     <ClCompile Include="..\..\src\helix.cpp" />
     <ClCompile Include="..\..\src\pitch.cpp" />
+    <ClCompile Include="..\..\src\Bomber.cpp" />
+    <ClCompile Include="..\..\src\Bomb.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\bullet.h" />
@@ -111,6 +113,8 @@
     <ClInclude Include="..\..\src\hud.h" />
     <ClInclude Include="..\..\src\Spitfire.h" />
     <ClInclude Include="..\..\src\World.h" />
+    <ClInclude Include="..\..\src\Bomber.h" />
+    <ClInclude Include="..\..\src\Bomb.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="coldet">

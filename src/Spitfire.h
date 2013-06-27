@@ -8,11 +8,10 @@
 class Spitfire : public Plane{
 	Mesh*    back_pitch;
 	Matrix44 back_pitch_m;
-	float    back_pitch_r;
-	float    desired_bp_r;
 
 	Helix helix_;
 	Pitch pitch_;
+
 public:
 	Spitfire(std::string meshdir, std::string texturedir, Vector3 position);
 	virtual void update(double);

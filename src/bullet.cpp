@@ -6,7 +6,7 @@
 
 Bullet::Bullet(Matrix44 position, bool thrownByPlayer, int damage):Entity(Vector3(position.m[12],position.m[13],position.m[14])){
 	speed = 900;
-	range = 10000;
+	range = 7000;
 	distance_traveled = 0;
 
 	matrix_ = position;
@@ -47,7 +47,8 @@ void Bullet::render(){
 	glEnd();
 }
 
-void Bullet::relife(Matrix44 position){
+void Bullet::relife(Matrix44 position, bool thrownByPlayer){
+	this->thrownByPlayer = thrownByPlayer;
 	distance_traveled = 0;
 
 	aux = Vector3(0,0,0);

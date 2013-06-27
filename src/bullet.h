@@ -26,7 +26,7 @@ public:
 	void update(double elapsed_time);
 	void render();
 	void kill(){isDead = true;}
-	void relife(Matrix44 position);
+	void relife(Matrix44 position, bool thrownByPlayer);
 };
 
 #endif

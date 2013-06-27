@@ -33,6 +33,7 @@ void Game::init(void)
 
 	//hide the cursor
 	SDL_ShowCursor(!mouse_locked); //hide or show the mouse
+	mouse_control = false;
 }
 
 //what to do when the image has to be draw
@@ -62,30 +63,33 @@ void Game::render(void)
 
 void Game::update(double seconds_elapsed)
 {
-	//to navigate with the mouse fixed in the middle
-	if (mouse_locked)
-	{
-		//SDL_WarpMouse(WINDOW_WIDTH*0.5, WINDOW_HEIGHT*0.5); //put the mouse back in the middle of the screen
-		this->mouse_position.x = WINDOW_WIDTH*0.5;
-		this->mouse_position.y = WINDOW_HEIGHT*0.5;
+	if(mouse_control){
+		if(mouse_delta.x > 0)
+			World::getInstance()->mainCharacter->Roll("LEFT", seconds_elapsed);
+		if(mouse_delta.x < 0)
+			World::getInstance()->mainCharacter->Roll("RIGHT", seconds_elapsed);
+		if(mouse_delta.y > 0)
+			World::getInstance()->mainCharacter->vRoll("UP", seconds_elapsed);
+		if(mouse_delta.y < 0)
+			World::getInstance()->mainCharacter->vRoll("DOWN", seconds_elapsed);
+
+		//to navigate with the mouse fixed in the middle
+		if (mouse_locked)
+		{
+			SDL_WarpMouse(WINDOW_WIDTH*0.5, WINDOW_HEIGHT*0.5); //put the mouse back in the middle of the screen
+			this->mouse_position.x = WINDOW_WIDTH*0.5;
+			this->mouse_position.y = WINDOW_HEIGHT*0.5;
+		}
+	
+
+		double speed = seconds_elapsed * 50;//seconds_elapsed * 1000; //the speed is defined by the seconds_elapsed so it goes constant
+
+		//mouse input to rotate the cam
+		if ((mouse_state & SDL_BUTTON_LEFT)) //is left button pressed?
+		{
+			World::getInstance()->mainCharacter->shoot(true);
+		}
 	}
-
-	double speed = seconds_elapsed * 50;//seconds_elapsed * 1000; //the speed is defined by the seconds_elapsed so it goes constant
-
-	/* /mouse input to rotate the cam
-	if ((mouse_state & SDL_BUTTON_LEFT) || mouse_locked ) //is left button pressed?
-	{
-		World::getInstance()->camera->rotate(speed * 30 * mouse_delta.x * 0.001, Vector3(0,-1,0));
-		World::getInstance()->camera->rotate(speed * 30 * mouse_delta.y * 0.001, camera->getLocalVector( Vector3(-1,0,0)));
-	}*/
-
-	//async input to move the camera around
-	if(keystate[SDLK_LSHIFT])
-		speed *= 10;
-	if (keystate[SDLK_UP])    World::getInstance()->camera->move(Vector3(0,0,1) * speed);
-	if (keystate[SDLK_DOWN])  World::getInstance()->camera->move(Vector3(0,0,-1) * speed);
-	if (keystate[SDLK_LEFT])  World::getInstance()->camera->move(Vector3(1,0,0) * speed);
-	if (keystate[SDLK_RIGHT]) World::getInstance()->camera->move(Vector3(-1,0,0) * speed);
 
 	if (keystate[SDLK_d])    { World::getInstance()->mainCharacter->Roll("RIGHT", seconds_elapsed);		}
 	if (keystate[SDLK_a])    { World::getInstance()->mainCharacter->Roll("LEFT" , seconds_elapsed);		}
@@ -96,25 +100,24 @@ void Game::update(double seconds_elapsed)
 	if (keystate[SDLK_n])    { World::getInstance()->mainCharacter->hRoll("LEFT", seconds_elapsed);	    }
 	if (keystate[SDLK_m])    { World::getInstance()->mainCharacter->hRoll("RIGHT",   seconds_elapsed);	}
 	if (keystate[SDLK_SPACE]){ World::getInstance()->mainCharacter->shoot(true); }
+	if (keystate[SDLK_b])    { World::getInstance()->throwBomb(); } 
 	if (keystate[SDLK_l])    { std::cout << (World::getInstance()->mainCharacter->getMatrix()*Vector3(0,0,1)).y << std::endl;}
 	if (keystate[SDLK_v])    { World::getInstance()->cam = (World::getInstance()->cam == 0) ? 1 : 0; }
+	if (keystate[SDLK_c])    {
+		cout << "controls changed" << endl;
+		if(mouse_control){
+			mouse_control = false;
+			World::getInstance()->mainCharacter->v_roll = 2;
+			World::getInstance()->mainCharacter->roll   = 3;
+		}
+		else{
+			mouse_control = true;
+			World::getInstance()->mainCharacter->v_roll = 6;
+			World::getInstance()->mainCharacter->roll   = 6;
+		}
+	}
 
 	World::getInstance()->update(seconds_elapsed);
-	/*if ((mouse_state & SDL_BUTTON_LEFT) || mouse_locked ) //is left button pressed?
-	{
-		//poscen+Vector3(0, mouse_delta.x * speed *30 * 0.001 ,0);
-
-		World::getInstance()->camera->move(Vector3(1,0,0) * mouse_delta.x * speed );
-		World::getInstance()->camera->rotate(speed * 30 * mouse_delta.x * 0.001, Vector3(0,-1,0));
-		World::getInstance()->camera->rotate(speed * 30 * mouse_delta.y * 0.001, camera->getLocalVector( Vector3(-1,0,0)));
-	}
-	else {
-		//World::getInstance()->camera->eye    = World::getInstance()->mainCharacter->getMatrix() * Vector3(0,3,-10);
-		//World::getInstance()->camera->center = World::getInstance()->mainCharacter->getMatrix() * Vector3(1,1,1);
-		//World::getInstance()->camera->up     = World::getInstance()->mainCharacter->getMatrix().topVector();
-	}*/
-
-	angle += seconds_elapsed * 10;
 }
 
 //Keyboard event handler (sync input)

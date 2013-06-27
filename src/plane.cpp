@@ -10,7 +10,7 @@ Plane::Plane(std::string meshdir, std::string texturedir, Vector3 position)
 	this->std_speed    = 5;
 	this->roll         = 3;
 	this->v_roll       = 2;
-	this->h_roll       = 0.5;
+	this->h_roll       = 1;
 	this->friction     = 0.01;
 
 	numBullets   = 10000;

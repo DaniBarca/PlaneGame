@@ -80,6 +80,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\Bomb.cpp" />
+    <ClCompile Include="..\..\src\Bomber.cpp" />
     <ClCompile Include="..\..\src\pitch.cpp" />
     <ClCompile Include="..\..\src\bullet.cpp" />
     <ClCompile Include="..\..\src\BulletManager.cpp" />
@@ -116,6 +118,8 @@
     <ClCompile Include="..\..\src\World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\Bomb.h" />
+    <ClInclude Include="..\..\src\Bomber.h" />
     <ClInclude Include="..\..\src\bullet.h" />
     <ClInclude Include="..\..\src\camera.h" />
     <ClInclude Include="..\..\src\coldet\box.h" />

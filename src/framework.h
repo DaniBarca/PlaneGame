@@ -12,6 +12,8 @@ using namespace std;
 
 #define DEG2RAD 0.0174532925
 #define DEGTORAD(d) d*DEG2RAD
+#define RAD2DEG 57.2957795
+#define RADTODEG(r) r*RAD2DEG
 #define ONESPIN DEGTORAD(360)
 
 class Vector2

@@ -15,6 +15,7 @@
 class EnemyPlane : public Plane{
 	std::vector<Entity*> wayPoints;
 	int nextWaypoint;
+	bool inCollisionAlert;
 	bool alerted;
 	bool inPanic;
 	double alertTime;
@@ -30,6 +31,7 @@ public:
 	void evade(double elapsed_time);
 	void alert();
 	void panic();
+	void collisionAlert();
 
 	EnemyPlane(std::string meshdir, std::string texturedir);
 

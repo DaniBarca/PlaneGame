@@ -19,7 +19,7 @@ protected:
 public:
 	Plane(std::string meshdir, std::string texturedir, Vector3 position = Vector3(0,0,0));
 
-	void shoot(bool thrownByPlayer = false);
+	virtual void shoot(bool thrownByPlayer = false);
 };
 
 #endif

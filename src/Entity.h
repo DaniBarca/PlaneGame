@@ -16,10 +16,12 @@ public:
 
 	bool  Entity::isNearerThan(Entity* ent, int dist);
 	float distance(Entity* b);
-	void reset();
+	virtual void reset();
+
+	std::string name_;
 
 protected:
-	std::string name_;
+
 	Matrix44 matrix_;
 	Matrix44 initial_matrix;
 	int id;

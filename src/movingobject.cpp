@@ -17,12 +17,14 @@ protected:
 	float max_speed;
 	float min_speed;
 	float std_speed;
+
+	float friction;
+
+public:
 	float   roll;
 	float v_roll;
 	float h_roll;
 
-	float friction;
-public:
 	MovingObject(std::string meshdir, std::string texturedir, Vector3 position = Vector3(0,0,0), bool mipmapping = true) 
 	: GameObject(meshdir,texturedir,position,mipmapping){
 		this->desired_speed= 0;

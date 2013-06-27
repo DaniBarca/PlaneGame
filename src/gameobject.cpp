@@ -17,7 +17,6 @@ protected:
 	Mesh*    mesh_;		//Informació dels polígons
 	Texture* texture_;	//Informació de les textures
 
-	int priority;
 	int life;
 public:
 
@@ -25,8 +24,6 @@ public:
 	: Entity(position)    {
 		mesh_    = (MeshManager   ::getInstance())->get(meshdir);
 		texture_ = (TextureManager::getInstance())->get(texturedir, mipmapping);
-
-		priority = 1;
 
 		name_ = "GameObject " + id;
 
@@ -53,14 +50,19 @@ public:
 		matrix_.traslateLocal(v.x,v.y,v.z);
 	}
 
-	int getPriority() const	{ return priority;}
-
 	Mesh getMesh(){ return *mesh_;}
 
 	bool isDead(){ return life <= 0; }
 
 	void hurt(int damage){
 		life-=damage;
+	}
+
+	int getLife(){return life;}
+
+	virtual void reset(){
+		matrix_ = initial_matrix;
+		life = 100;
 	}
 };
 #endif

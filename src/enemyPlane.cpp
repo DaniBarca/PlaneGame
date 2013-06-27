@@ -3,7 +3,7 @@
 
 #include "enemyPlane.h"
 #define NUMPOINTS 3
-#define DISTANCE 100
+#define DISTANCE 150
 
 EnemyPlane::EnemyPlane(std::string meshdir, std::string texturedir) : Plane(meshdir,texturedir,Vector3(rand()%10000 - 5000, rand()%2000 - 800, rand()%10000 - 5000))
 {
@@ -31,6 +31,7 @@ EnemyPlane::EnemyPlane(std::string meshdir, std::string texturedir) : Plane(mesh
 
 	nextWaypoint = 0;
 
+	inCollisionAlert = false;
 	alerted = false;
 	inPanic = false;
 	evasionDir = 0;
@@ -52,20 +53,42 @@ void EnemyPlane::alert(){
 	alertTime = SDL_GetTicks();
 	alerted = true;
 	desired_speed = 100;
+
+	//cout << "alerta" << endl;
 }
 
 void EnemyPlane::panic(){
 	panicCount++;
 	if(!alerted || panicCount < 4 || inPanic) return;	//Si ya estábamos alerta, que cunda el pánico
 
-	cout << "panic" << endl;
 	panicTime = SDL_GetTicks();
 	inPanic = true;
 	evasionDir = -1;
+
+	//cout << "panico" << endl;
+}
+
+void EnemyPlane::collisionAlert(){
+	inCollisionAlert = true;
+	//cout << "alerta colisión" << endl;
 }
 
 void EnemyPlane::update(double elapsed_time){
 	MovingObject::update(elapsed_time);
+
+	if(inCollisionAlert){  //Si vamos a chocar con el suelo
+		v_roll = 5;
+		vRoll("DOWN", elapsed_time);	//giramos
+
+		//Y enderezamos:
+		float dir3    = matrix_.rightVector().dot(Vector3(0,1,0));
+		if(dir3 < 0)
+			Roll("RIGHT", elapsed_time);
+		if(dir3 > 0)
+			Roll("LEFT", elapsed_time);
+
+		inCollisionAlert = false;  //Aunque aquí lo ponemos en false, world volverá a comprobar si hay riesgo en la siguiente it
+	}
 
 	if(alerted && (SDL_GetTicks() - alertTime) * 0.001 > 30){ //mínimo 30 segundos en alerta
 		alerted = false;
@@ -97,6 +120,15 @@ void EnemyPlane::update(double elapsed_time){
 void EnemyPlane::pursuit(double elapsed_time){
 	//Hacemos que persiga un poco por detrás al jugador
 	goTo((World::getInstance()->mainCharacter->getMatrix() * Vector3(0,0,1) - Vector3(0,0,10)) - getMatrix()*Vector3(0,0,1), elapsed_time);
+
+	//Vector3 v = matrix_.frontVector();
+	//Vector3 vb= (World::getInstance())->mainCharacter->getMatrix().getPos() - matrix_.getPos();
+	//float angle = RADTODEG(acos(v.dot(vb) / (v.length()*vb.length())));
+	float angle = RADTODEG(matrix_.frontVector().dot((World::getInstance())->mainCharacter->getMatrix().getPos()));
+
+	if(-30 < angle && angle < 30){
+		shoot();
+	}
 }
 
 void EnemyPlane::patrol(double elapsed_time){
@@ -159,8 +191,8 @@ void EnemyPlane::goTo(Vector3 nextPoint, double elapsed_time){
 
 void EnemyPlane::render(){
 	GameObject::render();
+	//Este código es para hacer debug
 	/*
-	//Debug code
 	Matrix44 aux; aux.setIdentity();
 	glColor3f(255,255,255);
 	for(int i = 0; i < NUMPOINTS; ++i){
