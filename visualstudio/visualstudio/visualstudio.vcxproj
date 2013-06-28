@@ -101,7 +101,9 @@
     <ClCompile Include="..\..\src\gameobject.cpp" />
     <ClCompile Include="..\..\src\helix.cpp" />
     <ClCompile Include="..\..\src\hud.cpp" />
-    <ClCompile Include="..\..\src\main.cpp" />
+    <ClCompile Include="..\..\src\main.cpp">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../lib/include/bass24;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
     <ClCompile Include="..\..\src\mesh.cpp" />
     <ClCompile Include="..\..\src\MeshManager.cpp" />
     <ClCompile Include="..\..\src\movingobject.cpp" />
@@ -115,7 +117,9 @@
     <ClCompile Include="..\..\src\texture.cpp" />
     <ClCompile Include="..\..\src\TextureManager.cpp" />
     <ClCompile Include="..\..\src\utils.cpp" />
-    <ClCompile Include="..\..\src\World.cpp" />
+    <ClCompile Include="..\..\src\World.cpp">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../libs/include/bass24/c/bass.h;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Bomb.h" />
@@ -162,6 +166,9 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\..\src\bass.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,6 +1,8 @@
 #ifndef WORLD_H
 #define WORLD_H
 
+#pragma comment( lib, "bass.lib" )
+
 #include "TextureManager.cpp"
 #include "BulletManager.cpp"
 #include "MeshManager.cpp"
@@ -15,7 +17,7 @@
 #include "plane.h"
 #include "text.h"
 
-
+#include "../visualstudio/libs/include/bass24/c/bass.h"
 
 class Hud;
 #include "hud.h"
@@ -46,6 +48,10 @@ class World{
 
 	int level;
 	int aliveEnemies;
+
+	HSAMPLE hSample;
+	HCHANNEL hSampleChannel;
+
 public:
 	vector<GameObject*> scene;
 	int cam;

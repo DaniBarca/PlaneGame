@@ -129,4 +129,7 @@
       <Filter>octree</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\..\src\bass.lib" />
+  </ItemGroup>
 </Project>

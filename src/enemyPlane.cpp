@@ -161,9 +161,9 @@ void EnemyPlane::goTo(Vector3 nextPoint, double elapsed_time){
 	double et_i = 1/elapsed_time;
 
 	//Comprobamos si ya estamos casi en línea, estos 3 ifs evitan el efecto Parkinson
-	if(anguloa < 0.002)
+	if(anguloa < 0.005)
 		h_roll = anguloa*et_i;
-	if(angulob < 0.002)
+	if(angulob < 0.005)
 		v_roll = angulob*et_i;
 	if(anguloc < 0.05)
 		roll   = DEGTORAD(anguloc)*et_i;

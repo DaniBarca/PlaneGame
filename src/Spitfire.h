@@ -1,9 +1,10 @@
 
 #ifndef SPITFIRE_H
 #define SPITFIRE_H
-#include "plane.h"
+
 #include "helix.cpp"
 #include "pitch.cpp"
+#include "plane.h"
 
 class Spitfire : public Plane{
 	Mesh*    back_pitch;

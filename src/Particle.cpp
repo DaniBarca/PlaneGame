@@ -1,8 +1,10 @@
 #ifndef Particle
 #define Partice
 
+#include "TextureManager.cpp"
 #include "framework.h"
 #include "texture.h"
+#include "includes.h"
 
 class Particle{
 	float speed;
@@ -12,24 +14,29 @@ class Particle{
 	Vector3 Color;
 
 	Vector3 position;
-	Vector3 rotation;
 
 	Texture* texture;
 	bool isDead;
 
 public:
-	Particle(Texture* text, Vector3 position, double lifeTime, float speed, float size, float alpha, Vector3 Color, Vector3 direction, Vector3 rotation){
-		texture = text;
+	Particle(string text, Vector3 position, double lifeTime, float speed, float size, float alpha, Vector3 Color){
+		texture = (TextureManager::getInstance())->get(text);
 		this->lifeTime = lifeTime;
 		this->speed    = speed;
 		this->size     = size;
 		this->alpha    = alpha;
 		this->Color	   = Color;
-		this->rotation = rotation;
+		this->position = position;
 	}
 
 	void render(){
-
+		float hsize = size*0.5;
+		glColor3f(255,255,255);
+		texture->bind();
+		glBegin(GL_QUADS);
+			
+		glEnd();
+		texture->unbind();
 	}
 
 	void update(double elapsed_time){}

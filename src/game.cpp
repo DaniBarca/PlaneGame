@@ -101,7 +101,7 @@ void Game::update(double seconds_elapsed)
 	if (keystate[SDLK_m])    { World::getInstance()->mainCharacter->hRoll("RIGHT",   seconds_elapsed);	}
 	if (keystate[SDLK_SPACE]){ World::getInstance()->mainCharacter->shoot(true); }
 	if (keystate[SDLK_b])    { World::getInstance()->throwBomb(); } 
-	if (keystate[SDLK_l])    { std::cout << (World::getInstance()->mainCharacter->getMatrix()*Vector3(0,0,1)).y << std::endl;}
+	if (keystate[SDLK_l])    { World::getInstance()->loadLevel("..\\..\\data\\levels\\2.txt");}
 	if (keystate[SDLK_v])    { World::getInstance()->cam = (World::getInstance()->cam == 0) ? 1 : 0; }
 	if (keystate[SDLK_c])    {
 		cout << "controls changed" << endl;

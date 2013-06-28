@@ -23,6 +23,12 @@ World::World(){
 	bd.meshdir = "..\\..\\data\\superbunker";
 	buildsDir[4] = (bd);
 
+	//Cargamos la música
+	BASS_Init(1, 44100, 0, 0, NULL);
+	hSample = BASS_SampleLoad(false,"..\\..\\data\\sound\\music.mp3",0,0,3,BASS_SAMPLE_LOOP);
+	hSampleChannel = BASS_SampleGetChannel(hSample,false);
+	BASS_ChannelPlay(hSampleChannel,true);
+
 	level = 1;
 	loadLevel("..\\..\\data\\levels\\1.txt");
 }
@@ -184,6 +190,8 @@ void World::update(double elapsed_time){
 		aliveEnemies = buildings.size();
 
 	mainCharacter->update(elapsed_time);
+	mainCharacter->setListenerPosition(camera->center);
+	mainCharacter->setSoundPosition(mainCharacter->getMatrix().getPos());
 
 	//Set camera behind the plane
 	if(cam == 0){
@@ -212,6 +220,7 @@ void World::update(double elapsed_time){
 			continue;
 		}
 		enemyPlanes[i]->update(elapsed_time);
+		enemyPlanes[i]->setSoundPosition(enemyPlanes[i]->getMatrix().getPos());
 	}
 
 	if(level==2){

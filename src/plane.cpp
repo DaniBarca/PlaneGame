@@ -19,6 +19,17 @@ Plane::Plane(std::string meshdir, std::string texturedir, Vector3 position)
 	cadencia = 0.25;
 
 	name_ = "Plane " + id;
+
+	motor = BASS_SampleLoad(false,"..\\..\\data\\sound\\motor.mp3",0,0,3,BASS_SAMPLE_LOOP);
+	motorSampleChannel = BASS_SampleGetChannel(motor,false);
+	BASS_ChannelPlay(motorSampleChannel,true);
+	BASS_ChannelSetAttribute(motorSampleChannel,BASS_ATTRIB_VOL,0.5);
+	BASS_ChannelSet3DAttributes(motorSampleChannel,BASS_3DMODE_NORMAL,1,500,360,360,0.1);
+
+	bullet = BASS_SampleLoad(false,"..\\..\\data\\sound\\shot.mp3",0,0,3,0);
+	bulletSampleChannel = BASS_SampleGetChannel(bullet,false);
+	BASS_ChannelSetAttribute(bulletSampleChannel,BASS_ATTRIB_VOL,0.7);
+	BASS_ChannelSet3DAttributes(bulletSampleChannel,BASS_3DMODE_NORMAL,0,500,360,360,0.1);
 }
 
 void Plane::shoot(bool thrownByPlayer){
@@ -34,5 +45,18 @@ void Plane::shoot(bool thrownByPlayer){
 		(BulletManager::getInstance())->shoot(B,thrownByPlayer);
 		bulletsShoot+=2;
 		lastBulletThrown = SDL_GetTicks();
+		
+		BASS_ChannelPlay(bulletSampleChannel,true);
 	}
+}
+
+void Plane::setSoundPosition(Vector3 p){
+	BASS_3DVECTOR pos = BASS_3DVECTOR(p.x,p.y,p.z);
+	BASS_ChannelSet3DPosition(motorSampleChannel,&pos,NULL,NULL);
+	BASS_ChannelSet3DPosition(bulletSampleChannel,&pos,NULL,NULL);
+}
+
+void Plane::setListenerPosition(Vector3 p){
+	BASS_3DVECTOR sposb = BASS_3DVECTOR(p.x,p.y,p.z);
+	BASS_Set3DPosition(&sposb,NULL,NULL,NULL);
 }
